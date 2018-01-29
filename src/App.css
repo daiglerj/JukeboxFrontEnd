@@ -1,0 +1,162 @@
+
+.App{
+    text-align: center
+}
+.welcomeMessage {
+    text-align: center;
+}
+
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.authorizationButton {
+    width:175px;
+    height:50px;
+    background-color: mediumpurple;
+    color:white;
+    font-weight: bold;
+    text-decoration: none;
+    margin-bottom: 20px;
+    cursor:pointer
+}
+.authorizationButton:hover {
+    background-color: rebeccapurple
+}
+.authorizationLink{
+    color: white;
+    text-decoration: none;
+    line-height: 50px;
+    display: block
+}
+.authorizationLink:hover{
+    color:white;
+    text-decoration: none;
+}
+
+body {
+    padding:0;
+    font-family: serif Normal;
+}
+.welcomeMessage{
+    background-color: #DDD;
+    display: inline-block;
+    padding:70px;
+    width: 800px;
+    margin-top:80px;
+    margin-bottom:40px
+}
+@media only screen and (max-width: 850px)  {
+    .welcomeMessage{
+        width:400px;
+        padding:40px
+    }
+}
+.introHeader{
+    font-weight: 400;
+    font-size: 40px;
+}
+.largeInput {
+    width: 400px;
+    padding: 8px 16px;
+    border: 1px solid #CCC;
+    font-size: 12px;
+}
+.joinParty{
+    margin-top: 10px;
+    padding:10px;
+    border-radius:30px;
+    background-color: white;
+    color:mediumpurple;
+    cursor:pointer;
+    font-size:15px;
+    border: 2px solid mediumpurple;
+}
+.joinParty:hover{
+    color:white;
+    background-color:mediumpurple;
+    -webkit-transition: color 0.2s, background-color 0.2s;
+    text-decoration: none;
+}
+
+.bigOr{
+    margin:10px
+}
+
+#navbar {
+    height: 50px;
+    background-color:mediumpurple;
+}
+#searchLabel{
+    color:white;
+    margin-left:30px;
+    margin-right:10px;
+    font-size:14pt;
+}
+input.searchSongs{
+    margin-top:10px;
+    float:left;
+    margin-left:90px;
+    border-radius: 50px;
+    padding-left:15px
+    
+}
+input.searchSongs:focus{
+    outline:none
+}
+.username{
+    float:right;
+    margin-right:90px;
+    margin-top:15px;
+    color:white
+    
+}
+
+#searchResults{
+    width: 400px;
+    margin-left: 90px;
+    padding-left:0px;
+}
+
+.searchSongList{
+    background-color:white;
+    list-style: none;
+    margin:0px;
+    text-align: left;
+    padding:10px;
+
+}
+.searchSongList:hover{
+    cursor:pointer;
+    background-color:lightgrey
+}
+.searchSongList:active{
+    background-color:grey
+}
+
+.searchAlbumImage{
+    width:40px;
+    margin-right:10px;
+}
