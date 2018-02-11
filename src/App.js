@@ -5,6 +5,20 @@ import {BrowserRouter, Router, Route, Switch} from 'react-router-dom';
 import Welcome from './Components/WelcomeMessage'
 import PartyPrompt from './Components/PartyPrompt'
 import Main from './Components/Main'
+import { connect } from "react-redux"
+import { changeMessage } from "./actions/spotifyActions"
+import store from "./store"
+const mapStateToProps = state=>{
+    return {
+        message:state.message
+    };
+}
+const mapDispatchToProps = dispatch=>{
+    return({
+        changeMessage: ()=>dispatch(changeMessage())
+    })
+}
+
 class App extends Component {
   constructor(props){
       super(props); 
@@ -35,6 +49,10 @@ class App extends Component {
       this.URL_BASE = URL_BASE 
   }
     componentDidMount(event){
+        console.log(this.props.message)
+        console.log(store.getState())
+        this.props.changeMessage()
+        console.log(this.props.message)
         let fetchURL = this.URL_BASE + '/getAccessToken'
         let fetchBody = {
             method:"post",
@@ -173,7 +191,7 @@ class App extends Component {
         <BrowserRouter>
             <div>
                 <Route exact={true} path='/' component={()=> {return <Welcome AuthorizeURL={this.AuthorizeURL}/>}} /> 
-                <Route path='/ChoosePlaylist' component={()=>{return <PartyPrompt joinParty = {this.joinParty} createParty={this.createNewParty}/>}} /> 
+                <Route path='/ChoosePlaylist' component={()=>{return <PartyPrompt joinParty = {this.joinParty} createParty={this.createNewParty}/> }} /> 
                 <Route path='/joinparty' component={()=>{return <Main displayName={this.state.displayName} accessToken={this.state.accessToken} URL_BASE={this.URL_BASE}/>}} />
                 
             </div>
@@ -185,4 +203,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(mapStateToProps,mapDispatchToProps)(App);

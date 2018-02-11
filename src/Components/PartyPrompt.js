@@ -43,7 +43,7 @@ export default class PartyPrompt extends Component {
                 <input type = 'text' className='largeInput' value={this.state.PartySearch} onChange={this.handleChangeText} onFocus={this.handleFocus} onBlur={this.handleBlur}/><br />
                 <Link to = "/joinparty"><button className='joinParty' onClick={this.props.joinParty.bind("e", this.state.PartySearch)}>Join an existing Party</button></Link>
                 <span className='bigOr'>OR</span>
-                <button className = 'joinParty' onClick={this.props.createParty}>Create a new one!</button>
+                <Link to = "/joinparty"><button className = 'joinParty' onClick={this.props.createParty}>Create a new one!</button></Link>
             </div>
         )
     }

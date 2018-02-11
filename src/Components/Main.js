@@ -12,6 +12,7 @@ export default class Main extends Component {
         this.URL_BASE = this.props.URL_BASE
         this.handleSearchInput = this.handleSearchInput.bind(this)
         this.queueSong = this.queueSong.bind(this)
+        this.playTrack = this.playTrack.bind(this)
     }
     componentWillMount(){
         //TODO test if the user exits. If not, redirect
@@ -33,9 +34,9 @@ export default class Main extends Component {
         let trackObjects = []//Holds objects
         fetch(fetchURL,authOptions).then((response,body)=>{
             response.json().then(result=>{
-                console.log(result)
+                //console.log(result)
                 trackObjects = result.tracks.items //An array of up to 5 artist objects
-                console.log(trackObjects)
+                //console.log(trackObjects)
             }).then(()=>{
                 this.setState({
                     searchTracks:trackObjects
@@ -51,12 +52,19 @@ export default class Main extends Component {
     
     queueSong(trackId,event){        
         this.setState({
-            queue: this.state.queue.concat(trackId),
+            queue: this.state.queue.concat([trackId]),
             currentTrack: "https://open.spotify.com/embed?uri=spotify:track:" + trackId
-        })
-        console.log(this.props.accessToken)
+        }, ()=>{
+            console.log(this.state.queue)
+            if(this.state.queue.length <= 1){
+                this.playTrack(trackId)
+            }            
+        }) 
+    }
         
-        let fetchOptions = {
+    
+    playTrack(trackId){
+      let fetchOptions = {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',                
@@ -66,7 +74,6 @@ export default class Main extends Component {
                 accessToken: this.props.accessToken
             })
         }
-        console.log(JSON.stringify(fetchOptions))
         let fetchURL = this.URL_BASE + '/play'
         fetch(fetchURL,fetchOptions).then((error,response)=>{
             if(error){
@@ -76,7 +83,8 @@ export default class Main extends Component {
                 console.log(response)
             }
         })
-    }
+    }  
+    
     render(){
         return(
             <div>
