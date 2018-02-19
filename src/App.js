@@ -6,16 +6,22 @@ import Welcome from './Components/WelcomeMessage'
 import PartyPrompt from './Components/PartyPrompt'
 import Main from './Components/Main'
 import { connect } from "react-redux"
-import { changeMessage } from "./actions/spotifyActions"
+import { changeMessage, changeDisplayName, changeUserObject, setAccessToken} from "./actions/spotifyActions"
 import store from "./store"
 const mapStateToProps = state=>{
     return {
-        message:state.message
+        message:state.message,
+        displayName: state.displayName,
+        userObject: state.userObject,
+        accessToekn: state.accessToken
     };
 }
 const mapDispatchToProps = dispatch=>{
     return({
-        changeMessage: ()=>dispatch(changeMessage())
+        changeMessage: ()=>dispatch(changeMessage()),
+        changeDisplayName: (name)=>dispatch(changeDisplayName(name)),
+        changeUserObject: (user)=>dispatch(changeUserObject(user)),
+        setAccessToken: (accessToken)=>dispatch(setAccessToken(accessToken))
     })
 }
 
@@ -49,10 +55,7 @@ class App extends Component {
       this.URL_BASE = URL_BASE 
   }
     componentDidMount(event){
-        console.log(this.props.message)
         console.log(store.getState())
-        this.props.changeMessage()
-        console.log(this.props.message)
         let fetchURL = this.URL_BASE + '/getAccessToken'
         let fetchBody = {
             method:"post",
@@ -66,11 +69,12 @@ class App extends Component {
         if(this.accessCode !== ''){
              fetch(fetchURL,fetchBody).then((response,body)=>{
                  response.json().then(result=>{
-                    console.log("Access Token: " + result.access_token)
+                    console.log("Access Token: " + result.access_token)                    
+                    this.props.setAccessToken(result.access_token)
                     this.setState({
-                        accessToken:result.access_token
-                    },()=>{
-                        let userInfoURl =this.URL_BASE + '/getUserInfo'
+                        accessToken: result.access_token
+                    }, ()=>{
+                        let userInfoURl = this.URL_BASE + '/getUserInfo'
                          var options = {
                              method:"post",
                              headers: {'Content-Type': 'application/json'},
@@ -79,29 +83,23 @@ class App extends Component {
                                  accessToken:this.state.accessToken
                              })
                          }
-                         console.log(options)
                          fetch(userInfoURl,options).then((response,body)=>{
                              console.log("Done")
                              response.json().then((data)=>{
                                  var body = JSON.parse(data.body)
-                                 console.log(body)
-                                 this.setState({
-                                     User: body,
-                                     displayName:body.display_name
-                                 })
-                                 console.log(this.state)
+                                 console.log("Body: " + body)
+                                 this.props.changeDisplayName(body.display_name)
+                                 this.props.changeUserObject(body)
+                                 store.getState()
                              })
-                         })
+                        })
+                        
                         })
                     })
                     
                 })
             }           
         }
-
-      
-    
-    
     handleSearchInput(event){
         let searchInput = event.target.value
         this.setState({
@@ -152,7 +150,7 @@ class App extends Component {
                   'Content-Type': 'application/json',                
              },
              body:JSON.stringify({
-                User: this.state.displayName
+                User: this.props.displayName
              })           
         }
         fetch(fetchURL,reqOptions).then((response,body)=>{
@@ -173,7 +171,7 @@ class App extends Component {
             },
             body:JSON.stringify({
                 Code:code,
-                User: this.state.User
+                User: this.props.User
             })
         }
         fetch(fetchURL,reqOptions).then((response,body)=>{
@@ -192,7 +190,7 @@ class App extends Component {
             <div>
                 <Route exact={true} path='/' component={()=> {return <Welcome AuthorizeURL={this.AuthorizeURL}/>}} /> 
                 <Route path='/ChoosePlaylist' component={()=>{return <PartyPrompt joinParty = {this.joinParty} createParty={this.createNewParty}/> }} /> 
-                <Route path='/joinparty' component={()=>{return <Main displayName={this.state.displayName} accessToken={this.state.accessToken} URL_BASE={this.URL_BASE}/>}} />
+                <Route path='/joinparty' component={()=>{return <Main accessToken={this.state.accessToken} URL_BASE={this.URL_BASE}/>}} />
                 
             </div>
         </BrowserRouter>
@@ -202,5 +200,6 @@ class App extends Component {
     );
   }
 }
+
 
 export default connect(mapStateToProps,mapDispatchToProps)(App);

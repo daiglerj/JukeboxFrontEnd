@@ -1,6 +1,26 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom'
-export default class Main extends Component {
+import { connect } from "react-redux"
+import { addToQueue } from "./../actions/spotifyActions"
+import store from "./../store"
+import navbar from "./MainComponents/Navbar"
+const mapStateToProps = state=>{
+    return {
+        queue: state.queue,
+        displayName: state.displayName,
+        userObject: state.userObject,
+        URL_BASE: state.URL_BASE,
+        searchTrackObjects: state.searchTrackObjects
+
+    }
+}
+
+const mapDispatchToProps = dispatch=>{
+    return {
+        queueSong: (song) => dispatch(addToQueue(song))  
+    }
+}
+class Main extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -9,7 +29,6 @@ export default class Main extends Component {
             queue: [],
             currentTrack: "https://open.spotify.com/embed?uri=spotify:track:",
         }
-        this.URL_BASE = this.props.URL_BASE
         this.handleSearchInput = this.handleSearchInput.bind(this)
         this.queueSong = this.queueSong.bind(this)
         this.playTrack = this.playTrack.bind(this)
@@ -50,7 +69,9 @@ export default class Main extends Component {
         }
     }
     
-    queueSong(trackId,event){        
+    queueSong(trackId,event){
+        this.props.queueSong(trackId)
+        store.getState();
         this.setState({
             queue: this.state.queue.concat([trackId]),
             currentTrack: "https://open.spotify.com/embed?uri=spotify:track:" + trackId
@@ -74,7 +95,7 @@ export default class Main extends Component {
                 accessToken: this.props.accessToken
             })
         }
-        let fetchURL = this.URL_BASE + '/play'
+        let fetchURL = this.props.URL_BASE + '/play'
         fetch(fetchURL,fetchOptions).then((error,response)=>{
             if(error){
                 console.log(error)
@@ -94,15 +115,22 @@ export default class Main extends Component {
             <iframe src={this.state.currentTrack}
         frameborder="0" allowtransparency="true"></iframe>
                 </div>
-                    <div>
-            <ul id="searchResults">
-                {this.state.searchTracks.map(track => {
-                    var trackId = track.id
-                    return <li key={track.id} className="searchSongList" onClick={()=>{this.queueSong(trackId,"e")}}><img className="searchAlbumImage" src={track.album.images[2].url} />{track.name} by {track.artists[0].name}</li>
-                })}
-            </ul>
-        </div>
+                <div>
+                    <ul id="searchResults">
+                        {this.state.searchTracks.map(track => {
+                            var trackId = track.id
+                            return <li key={track.id} className="searchSongList" onClick={()=>{this.queueSong(trackId,"e")}}><img className="searchAlbumImage" src={track.album.images[2].url} />{track.name} by {track.artists[0].name}</li>
+                        })}
+                    </ul>
+                </div>
+                <div>
+                    <ul>
+                        
+                    </ul>
+                </div>
+
             </div>
         )
     }
 }
+export default connect(mapStateToProps,mapDispatchToProps)(Main);

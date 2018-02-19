@@ -10,3 +10,31 @@ export function changeMessage(){
         type: "CHANGE_MESSAGE"
     }
 }
+
+export function addToQueue(song){
+    return{
+        type: "ADD_TO_QUEUE",
+        payload: song
+    }
+}
+
+export function changeDisplayName(name){
+    return{
+        type:"CHANGE_DISPLAY_NAME",
+        payload: name
+    }
+}
+
+export function changeUserObject(userObject){
+    return{
+        type: "CHANGE_USER_OBJECT",
+        payload:userObject
+    }
+}
+
+export function setAccessToken(accessToken){
+    return{
+        type: "SET_ACCESS_TOKEN",
+        payload:accessToken
+    }
+}

@@ -1,11 +1,11 @@
-import {applyMiddleware,createStore} from "redux"
+import {applyMiddleware,createStore,combineReducers} from "redux"
 
 import {createLogger} from "redux-logger"
 import thunk from "redux-thunk"
 import promise from "redux-promise-middleware"
 
-import reducer from "./reducers/spotifyReducer"
-
+import spotifyReducer from "./reducers/spotifyReducer"
+import queueReducer from "./reducers/queueReducer"
 const middleware = applyMiddleware(promise(),thunk,createLogger())
-
-export default createStore(reducer,middleware)
+const combinedReducers = combineReducers(spotifyReducer,queueReducer)
+export default createStore(combinedReducers,middleware)
