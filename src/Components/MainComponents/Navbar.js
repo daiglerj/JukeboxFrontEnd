@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { connect } from "react-redux"
 import store from './../../store.js';
 import {setSearchTrackObjects} from "./../../actions/queueActions"
+
 const mapStateToProps = (state)=>{
     return {
-        displayName: state.displayName,
-        accessToken: state.accessToken,
-        searchTrackObjects: state.searchTrackObjects
+        displayName: state.user.displayName,
+        accessToken: state.user.accessToken,
+        searchTrackObjects: state.queue.searchTrackObjects
     }
 }
 const mapDispatchToProps = (dispatch)=>{
@@ -44,7 +45,8 @@ class Navbar extends Component {
                     trackObjects = result.tracks.items //An array of up to 5 artist objects
                     //console.log(trackObjects)
                 }).then(()=>{
-                    setSearchTrackObjects(trackObjects)
+                    this.props.setSearchTrackObjects(trackObjects)
+                    console.log(this.props.searchTrackObjects)
                     /*
                     this.setState({
                         searchTracks:trackObjects

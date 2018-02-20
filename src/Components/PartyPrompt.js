@@ -4,14 +4,14 @@ import Button from 'react-bootstrap/lib/Button';
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import store from "./../store"
-import { changeDisplayName, changeUserObject } from "./../actions/spotifyActions"
+import { changeDisplayName, changeUserObject } from "./../actions/userActions"
 
 const mapStateToProps = state=>{
     return {
-        displayName: state.displayName,
-        userObject: state.userObject,
-        URL_BASE: state.URL_BASE,
-        accessToken: state.accessToken
+        displayName: state.user.displayName,
+        userObject: state.user.userObject,
+        URL_BASE: state.user.URL_BASE,
+        accessToken: state.user.accessToken
     };
 }
 const mapDispatchToProps = dispatch=>{
@@ -83,7 +83,6 @@ class PartyPrompt extends Component {
     }
     
     joinParty(code){
-        console.log("Here " + this.props.displayName)
         let fetchURL = this.props.URL_BASE + '/joinParty'
         let reqOptions = {
             method:"put",
@@ -95,8 +94,8 @@ class PartyPrompt extends Component {
                 User: this.props.userObject
             })
         }
-        console.log(reqOptions)
         fetch(fetchURL,reqOptions).then((response,body)=>{
+            console.log(response)
             response.json().then(result=>{
                 console.log(result)
                 //add to state

@@ -1,17 +1,17 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom'
 import { connect } from "react-redux"
-import { addToQueue } from "./../actions/spotifyActions"
+import { addToQueue } from "./../actions/userActions"
 import store from "./../store"
-import navbar from "./MainComponents/Navbar"
+import Navbar from "./MainComponents/Navbar"
+import SearchTrackList from "./MainComponents/searchTrackList"
 const mapStateToProps = state=>{
     return {
-        queue: state.queue,
-        displayName: state.displayName,
-        userObject: state.userObject,
-        URL_BASE: state.URL_BASE,
-        searchTrackObjects: state.searchTrackObjects
-
+        queue: state.queue.queue,
+        displayName: state.user.displayName,
+        userObject: state.user.userObject,
+        URL_BASE: state.user.URL_BASE,
+        searchTrackObjects: state.queue.searchTrackObjects
     }
 }
 
@@ -34,7 +34,12 @@ class Main extends Component {
         this.playTrack = this.playTrack.bind(this)
     }
     componentWillMount(){
+        console.log("Hello" + this.props.searchTrackObjects)
         //TODO test if the user exits. If not, redirect
+    }
+    componentDidMount(){
+        console.log(store.getState())
+        console.log(this.props)
     }
     handleSearchInput(event){
         let searchInput = event.target.value
@@ -109,20 +114,8 @@ class Main extends Component {
     render(){
         return(
             <div>
-                <div id="navbar">
-                    <input className='searchSongs' type="text"  onChange={this.handleSearchInput} />
-                    <span className= "username">Welcome, {this.props.displayName}</span>
-            <iframe src={this.state.currentTrack}
-        frameborder="0" allowtransparency="true"></iframe>
-                </div>
-                <div>
-                    <ul id="searchResults">
-                        {this.state.searchTracks.map(track => {
-                            var trackId = track.id
-                            return <li key={track.id} className="searchSongList" onClick={()=>{this.queueSong(trackId,"e")}}><img className="searchAlbumImage" src={track.album.images[2].url} />{track.name} by {track.artists[0].name}</li>
-                        })}
-                    </ul>
-                </div>
+                <Navbar />
+                <SearchTrackList playTrack={this.playTrack}/>
                 <div>
                     <ul>
                         

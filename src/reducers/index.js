@@ -1,4 +1,9 @@
 import { combineReducers} from "redux"
 
-import reducer from "./spotifyReducer"
+import user from "./userReducer"
+import queue from "./queueReducer"
 
+export default combineReducers({
+    user,
+    queue
+})

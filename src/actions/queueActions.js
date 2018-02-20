@@ -4,3 +4,10 @@ export function setSearchTrackObjects(trackObjects){
         payload: trackObjects
     }
 }
+
+export function addToQueue(song){
+    return{
+        type: "ADD_TO_QUEUE",
+        payload: song
+    }
+}

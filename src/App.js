@@ -6,14 +6,14 @@ import Welcome from './Components/WelcomeMessage'
 import PartyPrompt from './Components/PartyPrompt'
 import Main from './Components/Main'
 import { connect } from "react-redux"
-import { changeMessage, changeDisplayName, changeUserObject, setAccessToken} from "./actions/spotifyActions"
+import { changeMessage, changeDisplayName, changeUserObject, setAccessToken} from "./actions/userActions"
 import store from "./store"
-const mapStateToProps = state=>{
+
+const mapStateToProps = store=>{
     return {
-        message:state.message,
-        displayName: state.displayName,
-        userObject: state.userObject,
-        accessToekn: state.accessToken
+        displayName: store.user.displayName,
+        userObject: store.user.userObject,
+        accessToekn: store.user.accessToken
     };
 }
 const mapDispatchToProps = dispatch=>{
@@ -56,6 +56,8 @@ class App extends Component {
   }
     componentDidMount(event){
         console.log(store.getState())
+        console.log(this.props)
+        store.getState()
         let fetchURL = this.URL_BASE + '/getAccessToken'
         let fetchBody = {
             method:"post",
