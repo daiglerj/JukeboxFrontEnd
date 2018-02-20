@@ -5,7 +5,7 @@ const initialState = {
     userObject: "",
     partyMembers: [],
     URL_BASE: 'http://localhost:8080',
-    accessToken: 'test',
+    accessToken: '',
 }
 
 const myReducer=(state=initialState,action)=>{
