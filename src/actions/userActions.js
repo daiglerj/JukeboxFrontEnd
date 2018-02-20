@@ -11,12 +11,6 @@ export function changeMessage(){
     }
 }
 
-export function addToQueue(song){
-    return{
-        type: "ADD_TO_QUEUE",
-        payload: song
-    }
-}
 
 export function changeDisplayName(name){
     return{
