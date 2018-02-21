@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom'
 import { connect } from "react-redux"
-import { addToQueue } from "./../actions/userActions"
+import { addToQueue } from "./../actions/queueActions"
 import store from "./../store"
 import Navbar from "./MainComponents/Navbar"
 import SearchTrackList from "./MainComponents/searchTrackList"

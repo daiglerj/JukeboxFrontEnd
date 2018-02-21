@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from "react-redux"
 import store from "./../../store"
-import { addToQueue } from "./../../actions/userActions"
+import { addToQueue } from "./../../actions/queueActions"
 
 const mapStateToProps = state =>{
     return{
