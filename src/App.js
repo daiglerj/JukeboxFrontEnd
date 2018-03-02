@@ -7,13 +7,15 @@ import PartyPrompt from './Components/PartyPrompt'
 import Main from './Components/Main'
 import { connect } from "react-redux"
 import { changeMessage, changeDisplayName, changeUserObject, setAccessToken} from "./actions/userActions"
+import {setOwner} from "./actions/queueActions"
 import store from "./store"
 
 const mapStateToProps = store=>{
     return {
         displayName: store.user.displayName,
         userObject: store.user.userObject,
-        accessToekn: store.user.accessToken
+        accessToekn: store.user.accessToken,
+        owner: store.queue.owner
     };
 }
 const mapDispatchToProps = dispatch=>{
@@ -21,7 +23,8 @@ const mapDispatchToProps = dispatch=>{
         changeMessage: ()=>dispatch(changeMessage()),
         changeDisplayName: (name)=>dispatch(changeDisplayName(name)),
         changeUserObject: (user)=>dispatch(changeUserObject(user)),
-        setAccessToken: (accessToken)=>dispatch(setAccessToken(accessToken))
+        setAccessToken: (accessToken)=>dispatch(setAccessToken(accessToken)),
+        setOwner: (owner)=>dispatch(setOwner(owner))
     })
 }
 
@@ -48,7 +51,6 @@ class App extends Component {
       }
       this.handleSearchInput = this.handleSearchInput.bind(this); 
       this.createNewParty = this.createNewParty.bind(this);
-      this.joinParty = this.joinParty.bind(this)
       this.AuthorizeURL = 'https://accounts.spotify.com/authorize/?client_id=a3dff10d10534805a46ac2fbbf692ea3&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2FChoosePlaylist&scope=user-read-private%20user-read-email%20streaming&state=34fFs29kd09&show_dialog=true'
       this.accessCode = accessCode
       
@@ -86,10 +88,8 @@ class App extends Component {
                              })
                          }
                          fetch(userInfoURl,options).then((response,body)=>{
-                             console.log("Done")
                              response.json().then((data)=>{
                                  var body = JSON.parse(data.body)
-                                 console.log("Body: " + body)
                                  this.props.changeDisplayName(body.display_name)
                                  this.props.changeUserObject(body)
                                  store.getState()
@@ -152,37 +152,21 @@ class App extends Component {
                   'Content-Type': 'application/json',                
              },
              body:JSON.stringify({
-                User: this.props.displayName
+                User: this.props.displayName,
+                UserObject: this.props.userObject
              })           
         }
         fetch(fetchURL,reqOptions).then((response,body)=>{
             response.json().then(result=>{
                 console.log(result)
+                console.log()
+                let owner = result.Owner
+                this.props.setOwner(owner)
                 //todo: add to state
             })
         })
     }
     
-    joinParty(code){
-        console.log("Here " + code)
-        let fetchURL = this.URL_BASE + '/joinParty'
-        let reqOptions = {
-            method:"put",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body:JSON.stringify({
-                Code:code,
-                User: this.props.User
-            })
-        }
-        fetch(fetchURL,reqOptions).then((response,body)=>{
-            response.json().then(result=>{
-                console.log(result)
-                //add to state
-            })
-        })
-    }
     
     
   render() {

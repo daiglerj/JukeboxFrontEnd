@@ -5,19 +5,25 @@ import { addToQueue } from "./../actions/queueActions"
 import store from "./../store"
 import Navbar from "./MainComponents/Navbar"
 import SearchTrackList from "./MainComponents/searchTrackList"
+import {setUsersInQueue} from "./../actions/queueActions"
+
 const mapStateToProps = state=>{
     return {
         queue: state.queue.queue,
         displayName: state.user.displayName,
         userObject: state.user.userObject,
         URL_BASE: state.user.URL_BASE,
-        searchTrackObjects: state.queue.searchTrackObjects
+        searchTrackObjects: state.queue.searchTrackObjects,
+        code: state.queue.code,
+        usersInQueue: state.queue.usersInQueue,
+        Owner: state.queue.owner
     }
 }
 
 const mapDispatchToProps = dispatch=>{
     return {
-        queueSong: (song) => dispatch(addToQueue(song))  
+        queueSong: (song) => dispatch(addToQueue(song)),
+        setUsersInQueue: (users) => dispatch(setUsersInQueue(users))
     }
 }
 class Main extends Component {
@@ -34,12 +40,11 @@ class Main extends Component {
         this.playTrack = this.playTrack.bind(this)
     }
     componentWillMount(){
-        console.log("Hello" + this.props.searchTrackObjects)
         //TODO test if the user exits. If not, redirect
     }
     componentDidMount(){
-        console.log(store.getState())
-        console.log(this.props)
+        //Load all users in the queue
+
     }
     handleSearchInput(event){
         let searchInput = event.target.value
@@ -117,11 +122,13 @@ class Main extends Component {
                 <Navbar />
                 <SearchTrackList playTrack={this.playTrack}/>
                 <div>
-                    <ul>
-                        
+                    <li>{this.props.Owner}</li>
+                    <ul  className="usersInQueueList">
+                        {this.props.usersInQueue.map(user=>{
+                            return <li><img src={user.images[0].url} />{user.display_name}</li>
+                        })}
                     </ul>
                 </div>
-
             </div>
         )
     }

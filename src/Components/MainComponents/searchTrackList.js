@@ -35,9 +35,10 @@ class searchTrackList extends Component{
             }            
         }) 
     }
+
     render(){
         return(
-            <div>
+            <div className="searchTracksDiv">
             <ul id="searchResults">
                 {this.props.searchTrackObjects.map(track => {
                     var trackId = track.id
