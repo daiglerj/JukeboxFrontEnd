@@ -89,6 +89,7 @@ class PartyPrompt extends Component {
     
     joinParty(code){
         //Set code in the state
+        console.log("Joining Party " + code)
         this.props.setCode(code)
             
     

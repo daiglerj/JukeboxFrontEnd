@@ -6,24 +6,6 @@
     text-align: center;
 }
 
-
-
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
 .authorizationButton {
     width:175px;
     height:50px;
@@ -123,17 +105,17 @@ input.searchSongs:focus{
     margin-right:90px;
     margin-top:15px;
     color:white
-    
 }
 
 #searchResults{
     width: 400px;
     margin-left: 90px;
     padding-left:0px;
+    position:absolute;
 }
 .searchTracksDiv{
     display: inline-block;
-    float:left
+    float:left;
 }
 .searchSongList{
     background-color:white;
@@ -162,7 +144,7 @@ input.searchSongs:focus{
     margin-top: 20px;
 }
 .usersInQueueList>li:first-child{
-    background-color:lightgray;
+    background-color:#DDD;
 }
 .usersInQueueList li{
     margin-bottom: 5px;
@@ -179,4 +161,30 @@ input.searchSongs:focus{
 #Members {
     font-size: 20px;
     margin-bottom: 30px;
+}
+
+.songList{
+    display: block;
+    list-style-type: none;
+    float:left; 
+    margin-left: 0px;
+    width:70%;
+}
+.songList li{
+    display: block;
+    margin-left:0px;
+    text-align: left;
+    margin: 10px;
+}
+.songList li:nth-child(even){
+    background-color:lightgray;
+}
+
+.code{
+    color:white;
+    top:0;
+    display:inline;
+    margin-top:15px;
+    margin-left: 20%;
+    float:left;
 }

@@ -36,14 +36,18 @@ class Main extends Component {
             currentTrack: "https://open.spotify.com/embed?uri=spotify:track:",
         }
         this.handleSearchInput = this.handleSearchInput.bind(this)
-        this.queueSong = this.queueSong.bind(this)
         this.playTrack = this.playTrack.bind(this)
     }
     componentWillMount(){
         //TODO test if the user exits. If not, redirect
-    }
-    componentDidMount(){
-        //Load all users in the queue
+            }
+    componentDidMount(){        
+        //Check if there are any changes to the queue every second
+        let fetchQueueURL = this.props.URL_BASE + "/getQueue"
+        setInterval(1000,()=>{
+            console.log("Looking for a queue")
+            
+        })
 
     }
     handleSearchInput(event){
@@ -78,20 +82,6 @@ class Main extends Component {
             })
         }
     }
-    
-    queueSong(trackId,event){
-        this.props.queueSong(trackId)
-        store.getState();
-        this.setState({
-            queue: this.state.queue.concat([trackId]),
-            currentTrack: "https://open.spotify.com/embed?uri=spotify:track:" + trackId
-        }, ()=>{
-            console.log(this.state.queue)
-            if(this.state.queue.length <= 1){
-                this.playTrack(trackId)
-            }            
-        }) 
-    }
         
     
     playTrack(trackId){
@@ -122,10 +112,15 @@ class Main extends Component {
                 <Navbar />
                 <SearchTrackList playTrack={this.playTrack}/>
                 <div>
-                    <li>{this.props.Owner}</li>
                     <ul  className="usersInQueueList">
                         {this.props.usersInQueue.map(user=>{
                             return <li><img src={user.images[0].url} />{user.display_name}</li>
+                        })}
+                    </ul>
+
+                    <ul className="songList">
+                        {this.props.queue.map(track=>{
+                            return <li><img src={track.album.images[2].url} /> {track.name}</li>
                         })}
                     </ul>
                 </div>

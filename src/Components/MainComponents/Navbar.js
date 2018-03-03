@@ -7,7 +7,8 @@ const mapStateToProps = (state)=>{
     return {
         displayName: state.user.displayName,
         accessToken: state.user.accessToken,
-        searchTrackObjects: state.queue.searchTrackObjects
+        searchTrackObjects: state.queue.searchTrackObjects,
+        code: state.queue.code
     }
 }
 const mapDispatchToProps = (dispatch)=>{
@@ -58,12 +59,16 @@ class Navbar extends Component {
                     console.log(error)
             })
         }
+        else{
+            this.props.setSearchTrackObjects([])
+        }
     }
     
     render(){
         return(
             <div id="navbar">
                 <input className='searchSongs' type="text"  onChange={this.handleSearchInput} />
+                <span className="code">Your party code is: {this.props.code}</span>
                 <span className= "username">Welcome, {this.props.displayName}</span>
                 <iframe src={this.state.currentTrack} frameborder="0" allowtransparency="true"></iframe>
             </div>

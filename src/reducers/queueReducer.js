@@ -2,7 +2,8 @@ const initialState = {
     queue: [],
     searchTrackObjects:[],
     usersInQueue: [],
-    owner: ""
+    owner: "",
+    code: -1
 }
 
 const queueReducer = (state=initialState,action) => {
@@ -14,6 +15,7 @@ const queueReducer = (state=initialState,action) => {
             return {...state,queue:state.queue.concat(action.payload)}
         }
         case "SET_CODE":{
+            console.log("Setting code in the reducer")
             return {...state, code:action.payload}
         }
             
@@ -23,6 +25,10 @@ const queueReducer = (state=initialState,action) => {
         case "SET_OWNER":{
             return {...state, owner: action.payload}
         }
+        case "SET_QUEUE":{
+            return {...state,queue:action.payload}
+        }
+            
         default: {
             return state;
         }

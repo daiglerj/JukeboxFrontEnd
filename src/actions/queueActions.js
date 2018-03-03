@@ -13,11 +13,9 @@ export function addToQueue(song){
 }
 
 export function setCode(code){
-    return ()=>{
-        return {
-            type: "SET_CODE",
-            payload: code
-        }
+    return {
+        type: "SET_CODE",
+        payload: code      
     }
 }
 
@@ -31,6 +29,14 @@ export function setUsersInQueue(users){
 export function setOwner(owner){
     return{
         type: "SET_OWNER",
-        payload: (owner)
+        payload: owner
     }
 }
+
+export function setQueue(queue){
+    return{
+        type:"SET_QUEUE",
+        payload: queue
+    }
+}
+

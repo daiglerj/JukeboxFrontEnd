@@ -1,18 +1,21 @@
 import React, {Component} from 'react'
 import { connect } from "react-redux"
 import store from "./../../store"
-import { addToQueue } from "./../../actions/queueActions"
+import { addToQueue, setQueue } from "./../../actions/queueActions"
 
 const mapStateToProps = state =>{
     return{
         searchTrackObjects: state.queue.searchTrackObjects,
-        queue:state.queue.queue
+        queue:state.queue.queue,
+        URL_BASE : state.user.URL_BASE,
+        code: state.queue.code
     }
 }
 
 const mapDispatchToProps = dispatch =>{
     return{
-        queueSong: (song) => dispatch(addToQueue(song))  
+        queueSong: (song) => dispatch(addToQueue(song)),
+        setQueue: (queue) => dispatch(setQueue(queue))
 
     }
 }
@@ -21,20 +24,50 @@ class searchTrackList extends Component{
         super(props)
         this.queueSong = this.queueSong.bind(this)
     }
-    queueSong(trackId,event){
-        console.log("24" + trackId)
-        this.props.queueSong(trackId)
+    queueSong(track,event){
+        //add track to db
+        let fetchURL = this.props.URL_BASE + "/addToQueue" 
+        let fetchOptions = {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',                
+            },
+            body: JSON.stringify({
+                Code: this.props.code,
+                Track: track
+            })
+        }
+        fetch(fetchURL,fetchOptions).then((response,body)=>{
+            console.log(response)
+            response.json().then(result=>{
+                console.log(result)
+                this.props.setQueue(result.Queue)
+            })
+        }).then(()=>{
+            console.log("Queue: " + this.props.queue.length)
+            if(this.props.queue.length<1){
+                this.props.playTrack(track.id)
+            }
+        })
+    
+        /*
+        this.props.queueSong(track) //adds track to the application queue state
+        let trackId = track.id
         store.getState();
         this.setState({
             //queue: this.state.queue.concat([trackId]),
             currentTrack: "https://open.spotify.com/embed?uri=spotify:track:" + trackId
         }, ()=>{
-            console.log(this.state.queue)
             if(this.props.queue.length <= 1){
                 this.props.playTrack(trackId)
-            }            
+            }
+            else{
+                
+            }
         }) 
+        */
     }
+    
 
     render(){
         return(
@@ -42,7 +75,7 @@ class searchTrackList extends Component{
             <ul id="searchResults">
                 {this.props.searchTrackObjects.map(track => {
                     var trackId = track.id
-                    return <li key={track.id} className="searchSongList" onClick={()=>{this.queueSong(track.id,"e")}}><img className="searchAlbumImage" src={track.album.images[2].url} />{track.name} by {track.artists[0].name}</li>
+                    return <li key={track.id} className="searchSongList" onClick={()=>{this.queueSong(track,"e")}}><img className="searchAlbumImage" src={track.album.images[2].url} />{track.name} by {track.artists[0].name}</li>
                 })}
             </ul>
             </div>
