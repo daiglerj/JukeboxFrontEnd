@@ -5,7 +5,7 @@ import { addToQueue } from "./../actions/queueActions"
 import store from "./../store"
 import Navbar from "./MainComponents/Navbar"
 import SearchTrackList from "./MainComponents/searchTrackList"
-import {setUsersInQueue} from "./../actions/queueActions"
+import {setUsersInQueue, setQueue} from "./../actions/queueActions"
 
 const mapStateToProps = state=>{
     return {
@@ -23,7 +23,8 @@ const mapStateToProps = state=>{
 const mapDispatchToProps = dispatch=>{
     return {
         queueSong: (song) => dispatch(addToQueue(song)),
-        setUsersInQueue: (users) => dispatch(setUsersInQueue(users))
+        setUsersInQueue: (users) => dispatch(setUsersInQueue(users)),
+        setQueue: (queue) => dispatch(setQueue(queue))
     }
 }
 class Main extends Component {
@@ -43,11 +44,34 @@ class Main extends Component {
             }
     componentDidMount(){        
         //Check if there are any changes to the queue every second
-        let fetchQueueURL = this.props.URL_BASE + "/getQueue"
-        setInterval(1000,()=>{
-            console.log("Looking for a queue")
+
+        let queueObjects = []
+        setInterval(()=>{
+            let fetchQueueURL = this.props.URL_BASE + "/getQueue/" + this.props.code
+            fetch(fetchQueueURL).then((response,body)=>{
+                response.json().then(result=>{
+                    queueObjects = result
+                }).then(()=>{
+                    this.props.setQueue(queueObjects)
+                })
+            })
+
+            //add to state
+            let fetchURL = this.props.URL_BASE + "/getUsers/" + this.props.code
+            let userObjects = [] 
+            fetch(fetchURL).then((response,body)=>{
+                console.log(response)
+                response.json().then(result=>{
+                    console.log(result.length)
+                    userObjects = result
+                }).then(()=>{
+                    console.log(userObjects)
+                    this.props.setUsersInQueue(userObjects)
+                })
+            })
+                       
             
-        })
+        },1000)
 
     }
     handleSearchInput(event){

@@ -22,7 +22,6 @@ const mapDispatchToProps = dispatch =>{
 class searchTrackList extends Component{
     constructor(props){
         super(props)
-        this.queueSong = this.queueSong.bind(this)
     }
     queueSong(track,event){
         //add track to db
@@ -50,22 +49,6 @@ class searchTrackList extends Component{
             }
         })
     
-        /*
-        this.props.queueSong(track) //adds track to the application queue state
-        let trackId = track.id
-        store.getState();
-        this.setState({
-            //queue: this.state.queue.concat([trackId]),
-            currentTrack: "https://open.spotify.com/embed?uri=spotify:track:" + trackId
-        }, ()=>{
-            if(this.props.queue.length <= 1){
-                this.props.playTrack(trackId)
-            }
-            else{
-                
-            }
-        }) 
-        */
     }
     
 

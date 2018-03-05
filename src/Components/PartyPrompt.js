@@ -106,22 +106,26 @@ class PartyPrompt extends Component {
         }
         fetch(fetchURL,reqOptions).then((response,body)=>{
             console.log(response)
-            response.json().then(result=>{
-                console.log(result)
-                //add to state
-                let fetchURL = this.props.URL_BASE + "/getUsers/" + code
-                let userObjects = [] 
-                fetch(fetchURL).then((response,body)=>{
-                    console.log(response)
-                    response.json().then(result=>{
-                        console.log(result.length)
-                        userObjects = result
-                    }).then(()=>{
-                        console.log(userObjects)
-                        this.props.setUsersInQueue(userObjects)
+
+            if(response.status != 404){
+                response.json().then(result=>{
+                    console.log(result)
+                    //add to state
+                    let fetchURL = this.props.URL_BASE + "/getUsers/" + code
+                    let userObjects = [] 
+                    fetch(fetchURL).then((response,body)=>{
+                        console.log(response)
+                        response.json().then(result=>{
+                            console.log(result.length)
+                            userObjects = result
+                        }).then(()=>{
+                            console.log(userObjects)
+                            this.props.setUsersInQueue(userObjects)
+                        })
                     })
-                })
-            })
+                })           
+            }
+
         })          
     }
     

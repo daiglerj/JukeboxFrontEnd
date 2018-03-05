@@ -68,7 +68,7 @@ class Navbar extends Component {
         return(
             <div id="navbar">
                 <input className='searchSongs' type="text"  onChange={this.handleSearchInput} />
-                <span className="code">Your party code is: {this.props.code}</span>
+                <span className="code">Your party code is {this.props.code}</span>
                 <span className= "username">Welcome, {this.props.displayName}</span>
                 <iframe src={this.state.currentTrack} frameborder="0" allowtransparency="true"></iframe>
             </div>

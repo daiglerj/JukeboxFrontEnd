@@ -3,7 +3,7 @@ const initialState = {
     searchTrackObjects:[],
     usersInQueue: [],
     owner: "",
-    code: -1
+    code: 0
 }
 
 const queueReducer = (state=initialState,action) => {
